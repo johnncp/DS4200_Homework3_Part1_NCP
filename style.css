@@ -1,0 +1,227 @@
+/* default to border-box */
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+
+  /* Scroll behavior taught by https://www.w3schools.com/cssref/pr_scroll-behavior.php */
+  scroll-behavior: smooth;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/* Import fonts */
+@font-face {
+  font-family: Old Standard;
+  src: url("https://cdn.glitch.global/bd5c1dfa-c7de-4de5-ab4f-82d20b7c5b9d/OldStandardTT-Regular.ttf?v=1727103296691")
+    format("truetype");
+}
+
+@font-face {
+  font-family: Old Standard;
+  font-weight: bold;
+  src: url("https://cdn.glitch.global/bd5c1dfa-c7de-4de5-ab4f-82d20b7c5b9d/OldStandardTT-Bold.ttf?v=1727103292962")
+    format("truetype");
+}
+
+@font-face {
+  font-family: Old Standard;
+  font-weight: italic;
+  src: url("https://cdn.glitch.global/bd5c1dfa-c7de-4de5-ab4f-82d20b7c5b9d/OldStandardTT-Italic.ttf?v=1727103303686")
+    format("truetype");
+}
+
+/* adjust typography defaults */
+body {
+  margin: 1rem;
+  font-family: sans-serif;
+  line-height: 1.5;
+
+  /* Gradient effect — with help from https://www.w3schools.com/css/css3_gradients.asp */
+  background: linear-gradient(to bottom, #0e2a0e, black);
+}
+
+/* Making a grid container — with help from https://www.w3schools.com/css/css_grid_container.asp */
+.grid-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 2rem;
+}
+
+.column {
+  flex: 1;
+  margin: 2px;
+  padding: 40px;
+
+  /* Making only the background transparent — with help from https://www.w3schools.com/css/css_colors_rgb.asp */
+  background-color: rgba(240, 240, 240, 0.15);
+}
+
+/* Making a flex container — with help from https://www.w3schools.com/css/css3_flexbox_container.asp */
+/* Alignment help from https://www.educative.io/answers/how-to-align-items-to-the-center-using-flexbox */
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.title {
+  color: #d1bda6;
+  font-family: Old Standard, sans-serif;
+  font-size: 5rem;
+  line-height: 105%;
+  letter-spacing: -0.4rem;
+  margin: 100;
+  text-align: center;
+}
+
+.emphasisTitle {
+  font-size: 12rem;
+  font-style: bold;
+  display: block;
+  margin: 2rem;
+}
+
+.titleAlt {
+  font-size: 3rem;
+  font-style: bold;
+  margin: 2rem;
+  letter-spacing: 0;
+  opacity: 0.75;
+  transition: 0.5s;
+}
+
+.titleAlt:hover {
+  font-size: 3rem;
+  font-style: bold;
+  margin: 2rem;
+  letter-spacing: 1px;
+  opacity: 1;
+}
+
+.photoCaption {
+  color: white;
+  font-family: Georgia, sans-serif;
+  opacity: 0.8;
+  font-size: 1rem;
+  display: block;
+}
+
+.secondary {
+  color: white;
+  font-family: Old Standard, sans-serif;
+  font-size: 3rem;
+  line-height: 105%;
+  letter-spacing: -0.16rem;
+  text-align: left;
+  margin: 2rem;
+}
+
+.columnText {
+  color: white;
+  font-size: 1.2rem;
+  font-family: Georgia, sans-serif;
+  line-height: 107%;
+}
+
+.reducedOpacity {
+  opacity: 0.5;
+}
+
+.sticky {
+  position: sticky;
+  top: 4rem;
+}
+
+.stickyH2 {
+  position: sticky;
+  top: 3rem;
+}
+
+/* images and videos max out at full width */
+img,
+video {
+  height: auto;
+  max-width: 100%;
+  transition: max-width 1s;
+}
+
+img:hover {
+  max-width: 102%;
+}
+
+button,
+input {
+  font-family: Georgia, sans-serif;
+  font-size: 1.1rem;
+  background: #474038;
+  border: 1px solid #d1bda6;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  transition: 500ms;
+  cursor: pointer;
+  color: #d1bda6;
+  transition: 0.4s;
+}
+
+button:hover {
+  background-color: #d1bda6;
+  border: 1px solid #474038;
+  color: #474038;
+  font-size: 1.5rem;
+}
+
+.buttonEmphasis {
+  background-color: #152911;
+  border: 1px solid #d1bda6;
+  color: #d1bda6;
+}
+
+.buttonEmphasis:hover {
+  background-color: #d1bda6;
+  border: 1px solid #152911;
+  color: #152911;
+  font-size: 1.5rem;
+}
+
+/* Ensure that the summary and ordered list text inside details is white */
+summary {
+  color: white; /* This makes the summary text white */
+  font-family: Georgia, sans-serif;
+  font-size: 1.2rem;
+}
+
+details ol {
+  color: white; /* This makes the ordered list (ol) text inside details white */
+  font-family: Georgia, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.5; /* Improve readability */
+}
+
+details {
+  color: white; /* Ensures that all text inside details is white */
+}
+
+ol li {
+  color: white; /* Targets each list item in the ol */
+}
+
+a {
+  color: #d1bda6;
+  transition: 0.4s;
+}
+
+a:hover {
+  color: #add8e6;
+  transition: 0.4s;
+}
+
+a:visited {
+  color: #90ee90;
+}
