@@ -1,94 +1,84 @@
-
-
-
-// part 2.1: box plots side by side
+// PART 2.1: Side-by-side Boxplot using socialMedia.csv
 const socialMedia = d3.csv("socialMedia.csv");
+
+// Once the data is loaded, proceed with plotting
 socialMedia.then(function(data) {
     // Convert string values to numbers
     data.forEach(function(d) {
         d.Likes = +d.Likes;
     });
 
-    // dimensions + margins for the SVG
+    // Define the dimensions and margins for the SVG
     const margin = {
-      top: 50, bottom: 50, 
-      left: 30,  right: 30};
-    
-    const width = 1000;
-    const height = 750;
+      top: 25, 
+      right: 35, 
+      bottom: 60, 
+      left: 60};
+    const width = 1000 - margin.left - margin.right;
+    const height = 600 - margin.top - margin.bottom;
 
-    const horizontalMargins = margin.left + margin.right;
-    const verticalMargins = margin.top + margin.bottom;
-
-    
-    const marginWidth = 1000 - horizontalMargins;
-    const marginHeight = 750 - verticalMargins;
+    // Create the SVG container
     const svg = d3.select("#boxplot").append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          
-          .append("g") // group other svg elements
-          .attr("transform", 
-            `translate(${margin.left}, ${margin.top})`);
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Set up scales for x and y axes
-
-    const uniquePlatforms = Array.from(
-      d3.group(data, d => d.Platform).keys()
-    );
-
+    const platforms = [...new Set(data.map(d => d.Platform))];
     const xScale = d3.scaleBand()
-          .domain(uniquePlatforms)
+          .domain(platforms)
           .range([0, width])
-          .padding(.45);
-          
-    let yScale = d3.scaleLinear()
-              .domain([d3.min(data, d => d.Likes), d3.max(data, d => d.Likes)])
-              .range([height - margin.bottom, margin.top])
+          .paddingInner(0.2);
+    const yScale = d3.scaleLinear()
+          .domain([d3.min(data, d => d.Likes), d3.max(data, d => d.Likes)])
+          .range([height, 0]);
 
-    // Add x-axis label
+    // Add x-axis
     svg.append("g")
-       .attr("transform", `translate(0, ${height - margin.bottom})`)
-       .call(d3.axisBottom(xScale))
-
-    // Add y-axis 
+       .attr("transform", `translate(0,${height})`)
+       .call(d3.axisBottom(xScale));
+    // Add y-axis
     svg.append("g")
-      .call(d3.axisLeft().scale(yScale));
+       .call(d3.axisLeft(yScale));
 
     // Add x-axis label
     svg.append("text")
        .attr("x", width / 2)
-       .attr("y", height - margin.bottom * 2 + 50)
+       .attr("y", height + margin.bottom - 5)
+       .style("text-anchor", "middle")
        .text("Platform");
 
     // Add y-axis label
     svg.append("text")
        .attr("transform", "rotate(-90)")
-       .attr("x", -height/2 + 10) // middle  but above a little bit 
-       .attr("y", -margin.left + 10)
+       .attr("x", -height/2)
+       .attr("y", -margin.left + 15)
+       .style("text-anchor", "middle")
        .text("Likes");
 
     // Function to calculate summary statistics for the boxplot:
     // We calculate min, q1, median, q3, and max for each platform.
     const rollupFunction = function(groupData) {
         const values = groupData.map(d => d.Likes).sort(d3.ascending);
-
-
-        const min = d3.min(data, d => d.Likes);
+        const min = d3.min(values);
         const q1 = d3.quantile(values, 0.25);
         const median = d3.quantile(values, 0.5);
         const q3 = d3.quantile(values, 0.75);
-        const max = d3.max(data, d => d.Likes);
-
+        const max = d3.max(values);
         return {min, q1, median, q3, max};
     };
 
+    // Roll up the data to compute summary statistics (min, q1, median, q3, max) for each platform.
+    // d3.rollup groups the data by platform and applies the rollupFunction to compute these values.
     const quantilesByGroups = d3.rollup(data, rollupFunction, d => d.Platform);
 
     // For each platform, set up the x position and box width for the boxplot elements.
     quantilesByGroups.forEach((quantiles, platform) => {
         const x = xScale(platform);
         const boxWidth = xScale.bandwidth();
+
+        console.log(x);
 
         // Draw vertical line from the minimum to maximum value for each platform
         svg.append("line")
@@ -122,7 +112,8 @@ socialMedia.then(function(data) {
 });
 
 
-// 2.2 Side by side bar plot
+// PART 2.2: Side-by-side Bar Plot using SocialMediaAvg.csv
+// Prepare your data and load the data again. This data should contain three columns: Platform, PostType, and AvgLikes.
 const socialMediaAvg = d3.csv("socialMediaAvg.csv");
 
 socialMediaAvg.then(function(data) {
@@ -154,7 +145,7 @@ socialMediaAvg.then(function(data) {
     const x0 = d3.scaleBand()
           .domain(platformsAvg)
           .range([0, width2])
-          .paddingInner(0.1);
+          .padding(0.05);
 
     const x1 = d3.scaleBand()
           .domain(postTypes)
@@ -276,9 +267,7 @@ socialMediaTime.then(function(data) {
     svg3.append("g")
          .attr("transform", `translate(0,${height3})`)
          .call(xAxisTime)
-         .selectAll("text")
-         .style("text-anchor", "end")
-         .attr("transform", "rotate(-25)");
+         .selectAll("text");
 
     // Draw the y-axis
     svg3.append("g")
@@ -288,7 +277,6 @@ socialMediaTime.then(function(data) {
     svg3.append("text")
          .attr("x", width3/2)
          .attr("y", height3 + margin3.bottom - 10)
-         .style("text-anchor", "middle")
          .text("Date");
 
     // Add y-axis label
